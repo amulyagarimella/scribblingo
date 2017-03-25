@@ -1,2 +1,2 @@
 # scribblingo
-learn how to write languages!
+learn how to write in languages!
