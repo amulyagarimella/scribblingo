@@ -1,0 +1,90 @@
+<html>
+    <script type="text/javascript">
+    var canvas, ctx, flag = false,
+        prevX = 0,
+        currX = 0,
+        prevY = 0,
+        currY = 0,
+        dot_flag = false;
+
+    var x = "black",
+        y = 2;
+    
+    function init() {
+        canvas = document.getElementById('can');
+        ctx = canvas.getContext("2d");
+        w = canvas.width;
+        h = canvas.height;
+    
+        canvas.addEventListener("mousemove", function (e) {
+            findxy('move', e)
+        }, false);
+        canvas.addEventListener("mousedown", function (e) {
+            findxy('down', e)
+        }, false);
+        canvas.addEventListener("mouseup", function (e) {
+            findxy('up', e)
+        }, false);
+        canvas.addEventListener("mouseout", function (e) {
+            findxy('out', e)
+        }, false);
+    }
+    
+    
+    function draw() {
+        ctx.beginPath();
+        ctx.moveTo(prevX, prevY);
+        ctx.lineTo(currX, currY);
+        ctx.strokeStyle = x;
+        ctx.lineWidth = y;
+        ctx.stroke();
+        ctx.closePath();
+    }
+    
+    function erase() {
+        var m = confirm("clear all?");
+        if (m) {
+            ctx.clearRect(0, 0, w, h);
+            document.getElementById("canvasimg").style.display = "none";
+        }
+    }
+
+    
+    function findxy(res, e) {
+        if (res == 'down') {
+            prevX = currX;
+            prevY = currY;
+            currX = e.clientX - canvas.offsetLeft;
+            currY = e.clientY - canvas.offsetTop;
+    
+            flag = true;
+            dot_flag = true;
+            if (dot_flag) {
+                ctx.beginPath();
+                ctx.fillStyle = x;
+                ctx.fillRect(currX, currY, 2, 2);
+                ctx.closePath();
+                dot_flag = false;
+            }
+        }
+        if (res == 'up' || res == "out") {
+            flag = false;
+        }
+        if (res == 'move') {
+            if (flag) {
+                prevX = currX;
+                prevY = currY;
+                currX = e.clientX - canvas.offsetLeft;
+                currY = e.clientY - canvas.offsetTop;
+                draw();
+            }
+        }
+    }
+    </script>
+    <body onload="init()" style="background-color:#fecf8f">
+        <div style="position:absolute;top:5px;left:5px;border:2px solid;"><img src="https://image.ibb.co/cUbQmF/nihao.png" alt="nihao" border="0" /></div>
+        <canvas id="can" width="312" height="190" style="position:absolute;top:5px;left:5px;border:2px solid;"></canvas><input type="button" value="clear" id="clr" size="23" onclick="erase()" style="position:absolute;top:200px;left:5px;">
+        
+        <div style="position:absolute;top:230px;left:5px; padding:10px;background-color:white; border-radius:5px"><a href="chinese1.html" style="font-family: sans-serif; font-size:15pt; color:gray"><i>Back</i></a></div>
+    </body>
+    </html>
